@@ -26,6 +26,13 @@ func luaErrWrap(L *lua.LState, err error) {
 	}
 }
 
+// A connection exported to lua. must be wrapped with
+/*
+	conn := LConn{rawConn}
+	t.RawSetString("write", L.NewFunction(conn.LuaWrite))
+	t.RawSetString("close", L.NewFunction(conn.LuaClose))
+	t.RawSetString("read", L.NewFunction(conn.LuaRead))
+*/
 type LConn struct{ net.Conn }
 
 // The write function exported to lua. returns nil or error string.
@@ -75,7 +82,9 @@ func Dial(L *lua.LState) int {
 
 func NewState() *lua.LState {
 	L := lua.NewState()
-	L.SetGlobal("dial", L.NewFunction(Dial))
+	t := L.NewTable()
+	t.RawSetString("dial", L.NewFunction(Dial))
+	L.SetGlobal("gua", t)
 	return L
 }
 

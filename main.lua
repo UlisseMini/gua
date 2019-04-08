@@ -1,5 +1,5 @@
 local addr = 'localhost:1337'
-local conn, err = dial(addr)
+local conn, err = gua.dial(addr)
 if err ~= nil then
   print('error: '..err)
   return

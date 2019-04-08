@@ -26,7 +26,7 @@ func TestLuaDial(t *testing.T) {
 	}()
 
 	L := NewState()
-	if err := L.DoString(fmt.Sprintf(`local conn, err = dial('%s')
+	if err := L.DoString(fmt.Sprintf(`local conn, err = gua.dial('%s')
 							if err ~= nil then error(err) end
 							local dat, err = conn.read(128)
 							if err ~= nil then error(err) end

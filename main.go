@@ -73,15 +73,20 @@ func Dial(L *lua.LState) int {
 	return 2
 }
 
+func NewState() *lua.LState {
+	L := lua.NewState()
+	L.SetGlobal("dial", L.NewFunction(Dial))
+	return L
+}
+
 func main() {
 	if len(os.Args) != 2 {
 		fmt.Printf("Usage: %s <file.lua>\n", os.Args[0])
 		return
 	}
 
-	L := lua.NewState()
+	L := NewState()
 	defer L.Close()
-	L.SetGlobal("dial", L.NewFunction(Dial))
 
 	if err := L.DoFile(os.Args[1]); err != nil {
 		log.Print(err)
